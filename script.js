@@ -20,39 +20,50 @@ document.addEventListener('DOMContentLoaded', function() {
     // Solution tiles hover animation
     const solutionTiles = document.querySelectorAll('.solution-tile');
     const phoneMockupContainer = document.querySelector('.phone-mockup-container');
-    const appVideo = document.querySelector('.app-video');
+    const solutionTilesContainer = document.querySelector('.solution-tiles');
+    const allVideos = document.querySelectorAll('.app-video');
 
     solutionTiles.forEach(tile => {
         tile.addEventListener('mouseenter', function() {
-            // Remove active class from all tiles
+            // Remove active class from all tiles and videos
             solutionTiles.forEach(t => t.classList.remove('active'));
+            allVideos.forEach(video => {
+                video.classList.remove('active');
+                video.pause();
+            });
             
             // Add active class to current tile
             this.classList.add('active');
             
+            // Shift tiles to left
+            solutionTilesContainer.classList.add('shifted');
+            
             // Show phone mockup with animation
             phoneMockupContainer.classList.add('active');
             
-            // Play video if available
-            if (appVideo) {
-                appVideo.play();
+            // Show and play corresponding video
+            const target = this.getAttribute('data-target');
+            const targetVideo = document.getElementById(`video-${target}`);
+            if (targetVideo) {
+                targetVideo.classList.add('active');
+                targetVideo.play();
             }
-        });
-
-        tile.addEventListener('mouseleave', function() {
-            // Optional: Hide phone mockup when leaving tile
-            // phoneMockupContainer.classList.remove('active');
         });
     });
 
-    // Contact button functionality
-    const contactButton = document.querySelector('.contact-button');
-    if (contactButton) {
-        contactButton.addEventListener('click', function() {
-            // Add your contact functionality here
-            alert('Contact us at: info@tiffinez.com');
+    // Hide phone mockup when mouse leaves solution section
+    const solutionSection = document.querySelector('.solution-section');
+    solutionSection.addEventListener('mouseleave', function() {
+        solutionTiles.forEach(t => t.classList.remove('active'));
+        allVideos.forEach(video => {
+            video.classList.remove('active');
+            video.pause();
         });
-    }
+        solutionTilesContainer.classList.remove('shifted');
+        phoneMockupContainer.classList.remove('active');
+    });
+
+    // Contact button functionality - now handled by mailto link
 
     // App store button functionality
     const appButtons = document.querySelectorAll('.app-button');

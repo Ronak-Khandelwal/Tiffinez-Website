@@ -34,6 +34,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 0;
 }
 
 .logo {
@@ -42,10 +43,11 @@ body {
 }
 
 .logo-image {
-    height: 40px;
+    height: 60px;
     width: auto;
-    max-width: 120px;
+    max-width: 180px;
     object-fit: contain;
+    margin-left: -90px;
 }
 
 .logo-text {
@@ -190,50 +192,97 @@ body {
 
 /* Problem Section */
 .problem-section {
-    padding: 100px 0;
-    background-color: #1a1a1a;
+    padding: 80px ;
+    background-color: #1d1d1d;
 }
 
 .problem-content {
-    background-color: #2d2d2d;
-    padding: 60px;
+    padding: 20px;
     border-radius: 12px;
     font-size: 18px;
     line-height: 1.8;
     color: #cccccc;
+    margin-left: -25px;
+}
+
+.problem-headline {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 20px;
+    line-height: 1.4;
 }
 
 /* Solution Section */
 .solution-section {
     padding: 100px 0;
     background-color: #1a1a1a;
+    position: relative;
+    overflow: hidden;
 }
 
 .solution-container {
     position: relative;
     display: flex;
-    align-items: center;
-    gap: 60px;
-    min-height: 400px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 500px;
+    width: 100%;
 }
 
 .solution-tiles {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    flex: 1;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-direction: row;
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10;
+}
+
+.solution-tiles.shifted {
+    transform: translateX(-40%);
+}
+
+.solution-tiles.shifted .solution-tile:not(.active) {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+.solution-tiles.shifted .solution-tile.active {
+    opacity: 1;
+    transform: translateX(0) scale(1.05);
+    position: relative;
+    z-index: 15;
+}
+
+/* Individual tile positioning - all move to leftmost position */
+.solution-tiles.shifted .solution-tile[data-target="customers"].active {
+    transform: translateX(470px) scale(1.05);
+}
+
+.solution-tiles.shifted .solution-tile[data-target="owners"].active {
+    transform: translateX(70px) scale(1.05);
+}
+
+.solution-tiles.shifted .solution-tile[data-target="delivery"].active {
+    transform: translateX(-320px) scale(1.05);
 }
 
 .solution-tile {
-    background-color: #2d2d2d;
-    padding: 30px;
-    border-radius: 12px;
+    background: linear-gradient(145deg, #2d2d2d, #3a3a3a);
+    padding: 40px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    flex: 1;
+    min-height: 280px;
 }
 
 .solution-tile::before {
@@ -243,8 +292,8 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
-    transition: left 0.6s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.15), transparent);
+    transition: left 0.8s ease;
 }
 
 .solution-tile:hover::before {
@@ -252,55 +301,82 @@ body {
 }
 
 .solution-tile:hover {
-    transform: translateX(-20px);
     border-color: #ff6b35;
-    background-color: #333333;
-    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+    background: linear-gradient(145deg, #ff6b35, #e55a2b);
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+    transform: translateY(-5px) scale(1.02);
 }
 
-.solution-tile span {
-    font-size: 20px;
+.solution-tile.active {
+    border-color: #ff6b35;
+    background: linear-gradient(145deg, #ff6b35, #e55a2b);
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+    transform: translateY(-5px) scale(1.02);
+}
+
+.solution-headline {
+    font-size: 28px;
     font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.4;
+}
+
+.tile-title {
+    font-size: 24px;
+    font-weight: 700;
     color: #ffffff;
     position: relative;
     z-index: 2;
+    display: block;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.tile-description {
+    font-size: 16px;
+    font-weight: 400;
+    color: #e0e0e0;
+    position: relative;
+    z-index: 2;
+    line-height: 1.6;
+    text-align: justify;
+    margin: 0;
 }
 
 .phone-mockup-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: absolute;
+    right: 10%;
+    top: 0%;
+    transform: translateY(0) translateX(100%);
     opacity: 0;
-    transform: translateX(50px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
 }
 
 .phone-mockup-container.active {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0) translateX(0);
 }
 
 .phone-mockup {
     position: relative;
     width: 280px;
     height: 560px;
-    background: linear-gradient(145deg, #6b46c1, #8b5cf6);
+    background: #000;
     border-radius: 40px;
     padding: 20px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    border: 6px solid #333;
 }
 
 .phone-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 30px;
+    border-radius: 35px;
+    background: #000;
 }
 
 .video-overlay {
@@ -318,44 +394,55 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: none;
+}
+
+.app-video.active {
+    display: block;
+}
+
+/* Individual video elements for each solution */
+#video-customers {
+    /* Will be shown when customers tile is hovered */
+}
+
+#video-owners {
+    /* Will be shown when owners tile is hovered */
+}
+
+#video-delivery {
+    /* Will be shown when delivery tile is hovered */
 }
 
 /* Why Us Section */
 .why-us-section {
     padding: 100px 0;
-    background-color: #1a1a1a;
+    background-color: #1d1d1d;
     position: relative;
+}
+
+.why-us-headline {
+    font-size: 28px;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: left;
+    margin-bottom: 40px;
+    line-height: 1.4;
 }
 
 .why-us-content {
-    background-color: #2d2d2d;
-    padding: 60px;
-    border-radius: 12px;
+    max-width: 800px;
+    margin: 0;
+    text-align: left;
     position: relative;
 }
 
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    margin-bottom: 60px;
-}
-
-.feature-item {
-    text-align: center;
-}
-
-.feature-item h3 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 15px;
-}
-
-.feature-item p {
-    font-size: 16px;
+.why-us-description {
+    font-size: 18px;
     color: #cccccc;
-    line-height: 1.6;
+    line-height: 1.8;
+    text-align: justify;
+    margin-bottom: 60px;
 }
 
 .contact-button {
@@ -368,15 +455,63 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
+    margin: 0;
+    display: inline-block;
+    text-decoration: none;
 }
 
 .contact-button:hover {
     background-color: #e55a2b;
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+}
+
+/* Footer */
+.footer {
+    background-color: #0d1117;
+    padding: 40px 0;
+    border-top: 1px solid #333;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-left p {
+    color: #cccccc;
+    font-size: 14px;
+    margin: 0;
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+}
+
+.linkedin-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 6px;
+}
+
+.linkedin-link:hover {
+    color: #0077b5;
+    background-color: rgba(0, 119, 181, 0.1);
+    transform: translateY(-1px);
+}
+
+.linkedin-link svg {
+    transition: all 0.3s ease;
 }
 
 /* Responsive Design */
@@ -445,6 +580,12 @@ body {
         width: fit-content;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
     }
 }
 
