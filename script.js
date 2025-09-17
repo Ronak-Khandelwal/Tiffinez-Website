@@ -17,51 +17,67 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Solution tiles hover animation
+    // Solution tiles hover/click animation
     const solutionTiles = document.querySelectorAll('.solution-tile');
     const phoneMockupContainer = document.querySelector('.phone-mockup-container');
     const solutionTilesContainer = document.querySelector('.solution-tiles');
     const allVideos = document.querySelectorAll('.app-video');
 
-    solutionTiles.forEach(tile => {
-        tile.addEventListener('mouseenter', function() {
-            // Remove active class from all tiles and videos
-            solutionTiles.forEach(t => t.classList.remove('active'));
-            allVideos.forEach(video => {
-                video.classList.remove('active');
-                video.pause();
-            });
-            
-            // Add active class to current tile
-            this.classList.add('active');
-            
-            // Shift tiles to left
-            solutionTilesContainer.classList.add('shifted');
-            
-            // Show phone mockup with animation
-            phoneMockupContainer.classList.add('active');
-            
-            // Show and play corresponding video
-            const target = this.getAttribute('data-target');
-            const targetVideo = document.getElementById(`video-${target}`);
-            if (targetVideo) {
-                targetVideo.classList.add('active');
-                targetVideo.play();
-            }
-        });
-    });
+    // Check if device is mobile
+    const isMobile = window.innerWidth <= 768;
 
-    // Hide phone mockup when mouse leaves solution section
-    const solutionSection = document.querySelector('.solution-section');
-    solutionSection.addEventListener('mouseleave', function() {
+    function activateTile(tile) {
+        // Remove active class from all tiles and videos
         solutionTiles.forEach(t => t.classList.remove('active'));
         allVideos.forEach(video => {
             video.classList.remove('active');
             video.pause();
         });
-        solutionTilesContainer.classList.remove('shifted');
-        phoneMockupContainer.classList.remove('active');
+        
+        // Add active class to current tile
+        tile.classList.add('active');
+        
+        // Shift tiles to left (only on desktop)
+        if (!isMobile) {
+            solutionTilesContainer.classList.add('shifted');
+            phoneMockupContainer.classList.add('active');
+        }
+        
+        // Show and play corresponding video
+        const target = tile.getAttribute('data-target');
+        const targetVideo = document.getElementById(`video-${target}`);
+        if (targetVideo) {
+            targetVideo.classList.add('active');
+            targetVideo.play();
+        }
+    }
+
+    solutionTiles.forEach(tile => {
+        // Use click for mobile, hover for desktop
+        if (isMobile) {
+            tile.addEventListener('click', function() {
+                activateTile(this);
+            });
+        } else {
+            tile.addEventListener('mouseenter', function() {
+                activateTile(this);
+            });
+        }
     });
+
+    // Hide phone mockup when mouse leaves solution section (desktop only)
+    const solutionSection = document.querySelector('.solution-section');
+    if (!isMobile) {
+        solutionSection.addEventListener('mouseleave', function() {
+            solutionTiles.forEach(t => t.classList.remove('active'));
+            allVideos.forEach(video => {
+                video.classList.remove('active');
+                video.pause();
+            });
+            solutionTilesContainer.classList.remove('shifted');
+            phoneMockupContainer.classList.remove('active');
+        });
+    }
 
     // Contact button functionality - now handled by mailto link
 
