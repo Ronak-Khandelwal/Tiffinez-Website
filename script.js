@@ -66,16 +66,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Contact button functionality - now handled by mailto link
 
     // App store button functionality
-    const appButtons = document.querySelectorAll('.app-button');
-    appButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
+    const appStoreLinks = document.querySelectorAll('.app-store-link');
+    appStoreLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
             e.preventDefault();
-            // Add your app store links here
-            if (this.classList.contains('google-play')) {
-                alert('Redirecting to Google Play Store...');
-            } else if (this.classList.contains('app-store')) {
-                alert('Redirecting to App Store...');
-            }
+            showComingSoonModal();
         });
     });
 
@@ -144,3 +139,35 @@ function preloadImages() {
 
 // Call preload function
 preloadImages();
+
+// Modal functionality
+function showComingSoonModal() {
+    const modal = document.getElementById('comingSoonModal');
+    modal.classList.add('active');
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    const modal = document.getElementById('comingSoonModal');
+    modal.classList.remove('active');
+    // Restore body scroll when modal is closed
+    document.body.style.overflow = 'auto';
+}
+
+// Close modal when clicking outside of it
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('comingSoonModal');
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal();
+        }
+    });
+});
